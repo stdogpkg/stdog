@@ -3,7 +3,7 @@ from tensorflow import SparseTensor
 from scipy.sparse import coo_matrix
 
 
-def ig2sparse(G, transpose=True, attr=None):
+def ig2sparse(G, transpose=False, attr=None, precision=32):
     if attr:
         source, target, data = zip(*[
             (e.source, e.target, e[attr])
@@ -18,7 +18,12 @@ def ig2sparse(G, transpose=True, attr=None):
     if not G.is_directed():
         source, target = source + target, target + source
         data = data + data
-    data = np.array(data, dtype=np.complex128)
+    if precision == 64:
+        np_type = np.float64
+    elif precision == 32:
+        np_type = np.float32
+
+    data = np.array(data, dtype=np_type)
     if transpose:
         L = coo_matrix(
             (data, (target, source)),
@@ -33,6 +38,7 @@ def ig2sparse(G, transpose=True, attr=None):
 
 
 def sparse_matrix2sparse_tensor(matrix):
+
     coo = matrix.tocoo()
     indices = np.mat([coo.row, coo.col]).transpose()
-    return SparseTensor(indices, coo.data, coo.shape)
+    return SparseTensor(indices, coo.data, coo.shape, )
