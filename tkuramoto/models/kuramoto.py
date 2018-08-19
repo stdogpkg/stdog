@@ -29,12 +29,9 @@ class Kuramoto:
     def adjacency(self):
         return self._adjacency
 
-    @property
-    def adjacency(self):
-        return self._adjacency
-
     @adjacency.setter
     def adjacency(self, values):
+
         if self.is_sparse_matrix is False:
             values = np.array(values)
 
@@ -50,6 +47,7 @@ class Kuramoto:
 
     @phases.setter
     def phases(self, values):
+
         if len(values) != self.num_oscilators:
             raise Exception("Phases: dimension mismatch with adjacency matrix")
         self._phases = values
@@ -58,16 +56,17 @@ class Kuramoto:
     def omegas(self):
         return self._omegas
 
-    @phases.setter
+    @omegas.setter
     def omegas(self, values):
+
         if len(values) != self.num_oscilators:
             raise Exception("Omegas: dimension mismatch with adjacency matrix")
         self._omegas = values
 
     def __repr__(self):
-        return "kuramoto(num. oscilators={} num. couplings={}"\
-            + " is sparse={})".format(
-                self.num_oscilators,
-                self.num_couplings,
-                int(self.is_sparse_matrix)
-            )
+        str_repr = "Kuramoto:"
+        str_repr += "\t\n num. oscilators=%d " % self.num_oscilators
+        str_repr += "\t\n num. couplings=%d" % self.num_couplings
+        str_repr += "\t\n is_sparse=%d" % int(self.is_sparse_matrix)
+
+        return str_repr
