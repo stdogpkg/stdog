@@ -1,6 +1,5 @@
 import tensorflow as tf
 import numpy as np
-from tkuramoto.utils import ig2sparse, sparse_matrix2sparse_tensor
 
 
 class Heuns:
@@ -9,45 +8,80 @@ class Heuns:
         kuramoto: "Kuramoto instance",
         total_time: "Simulation time",
         dt: "Time step",
-        time_slice: "Time slice"
+        precision: "number of bits 64 or 32",
+        transient: "transient"
     ):
 
         self.total_time = total_time
-        self.time_slice = time_slice
         self.dt = dt
         self.num_temps = int((total_time/dt))
         self.kuramoto = kuramoto
+        self.transient = transient
+        if precision == 64:
+            print("precision 64")
+            self.complex_np_type = np.complex128
+            self.complex_tf_type = tf.complex128
 
-        self.times = np.linspace(0, total_time, self.num_temps)
+            self.real_np_type = np.float64
+            self.real_tf_type = tf.float64
+
+            self.int_tf_type = tf.int64
+
+        elif precision == 32:
+            self.complex_np_type = np.complex64
+            self.complex_tf_type = tf.complex64
+
+            self.real_np_type = np.float32
+            self.real_tf_type = tf.float32
+
+            self.int_tf_type = tf.int64
+
+        else:
+            raise Exception("Valid options for precision are: 32 or 64")
 
         omegas = np.array(
             kuramoto.omegas,
-            dtype=np.complex128
+            dtype=self.real_np_type
         )
         self.omegas = omegas[np.newaxis, :]
-
+        self.phases = kuramoto.phases.copy().astype(self.real_np_type)
         couplings = np.array(
             kuramoto.couplings,
-            dtype=np.complex128
+            dtype=self.real_np_type
         )
         self.couplings = couplings[:, np.newaxis]
 
-    def create_sparse_tf(self):
+    def create_tf_graph(self):
 
         self.graph = tf.Graph()
+        coo = self.kuramoto.adjacency.tocoo()
+        indices = np.mat([coo.row, coo.col]).transpose().astype(np.int64)
         with self.graph.as_default():
-            adjacency = sparse_matrix2sparse_tensor(
-                self.kuramoto.adjacency
+
+            imag_number = tf.constant(0+1j, dtype=self.complex_tf_type)
+
+            number2 = tf.constant(
+                2,
+                dtype=self.real_tf_type
             )
+
+            adjacency = tf.SparseTensor(indices, coo.data, coo.shape)
             omegas = tf.constant(
                 self.omegas,
             )
+
             couplings = tf.constant(
                 self.couplings,
             )
             dt = tf.constant(
                 self.dt,
-                dtype=tf.complex128
+                dtype=self.real_tf_type
+            )
+            omegasDouble = tf.multiply(
+                number2, omegas
+            )
+            dtDiv2 = tf.divide(
+                dt, number2
             )
             phases = tf.Variable(
                 np.zeros(
@@ -56,11 +90,11 @@ class Heuns:
                         self.kuramoto.num_oscilators
                      )
                 ),
-                dtype=tf.complex128,
+                dtype=self.real_tf_type,
                 name="phases"
             )
             phases_placeholder = tf.placeholder(
-                dtype=tf.complex128,
+                dtype=self.real_tf_type,
                 shape=[
                     self.kuramoto.num_couplings,
                     self.kuramoto.num_oscilators
@@ -74,41 +108,31 @@ class Heuns:
                 name="assign_initial_phases"
             )
 
-            order_parameter_list = tf.Variable(
-                np.zeros(
-                    (self.kuramoto.num_couplings, self.time_slice)
-                ),
-                dtype=tf.float64,
-                name="order_parameter_list"
-            )
-
-            i_transient = tf.placeholder(
-                dtype=tf.int64,
-                shape=[],
-                name="i_transient"
-            )
-
-            v = tf.multiply(
-                1j,
-                phases
-            )
-            v = tf.exp(v)
-
-            M = tf.sparse_tensor_dense_matmul(
+            vs = tf.sin(phases)
+            vc = tf.cos(phases)
+            vst = tf.transpose(vs)
+            vct = tf.transpose(vc)
+            Ms = tf.sparse_tensor_dense_matmul(
                 adjacency,
-                tf.transpose(v),
+                vst,
             )
-            M = tf.transpose(M)
-#           M_tf = tf.reduce_sum(M_tf, axis=1)
-            M = tf.multiply(
-                tf.conj(
-                    v
-                ),
-                M
+            Mc = tf.sparse_tensor_dense_matmul(
+                adjacency,
+                vct,
             )
-            M = tf.imag(M)
-            M = tf.cast(M, tf.complex128)
 
+            Ms = tf.transpose(Ms)
+            Mc = tf.transpose(Mc)
+
+            Ms = tf.multiply(
+                vc,
+                Ms
+            )
+            Mc = tf.multiply(
+                vs,
+                Mc
+            )
+            M = tf.subtract(Ms, Mc)
             M = tf.multiply(
                 M,
                 couplings
@@ -118,7 +142,6 @@ class Heuns:
                 omegas,
                 M
             )
-
             temporary_phases = tf.multiply(
                 dt,
                 temporary_phases
@@ -128,61 +151,70 @@ class Heuns:
                 temporary_phases
             )
 
-            v2 = tf.multiply(
-                1j,
-                temporary_phases
-            )
-            v2 = tf.exp(v2)
-
-            M2 = tf.sparse_tensor_dense_matmul(
+            vs2 = tf.sin(temporary_phases)
+            vc2 = tf.cos(temporary_phases)
+            vs2t = tf.transpose(vs2)
+            vc2t = tf.transpose(vc2)
+            Ms2 = tf.sparse_tensor_dense_matmul(
                 adjacency,
-                tf.transpose(v2),
+                vs2t,
             )
-            M2 = tf.transpose(M2)
-#           M_tf = tf.reduce_sum(M_tf, axis=1)
-            M2 = tf.multiply(
-                tf.conj(
-                    v2
-                ),
-                M2
+            Mc2 = tf.sparse_tensor_dense_matmul(
+                adjacency,
+                vc2t,
             )
 
-            M2 = tf.imag(M2)
-            M2 = tf.cast(M2, tf.complex128)
+            Ms2 = tf.transpose(Ms2)
+            Mc2 = tf.transpose(Mc2)
+
+            Ms2 = tf.multiply(
+                vc2,
+                Ms2
+            )
+
+            Mc2 = tf.multiply(
+                vs2,
+                Mc2
+            )
+            M2 = tf.subtract(Ms2, Mc2)
             M2 = tf.multiply(
                 M2,
                 couplings
             )
 
             new_phases = tf.add(M2, M)
-            new_phases = tf.add(omegas, new_phases)
-            new_phases = dt*new_phases/2.
-            new_phases = tf.add(phases, new_phases)
+
+            new_phases = tf.add(new_phases, omegasDouble)
+            new_phases = tf.multiply(dtDiv2, new_phases)
+
+            new_phases = tf.add(phases, new_phases, name="new_phases_end")
 
             assign_phases = tf.assign(phases, new_phases, name="assign_phases")
             with tf.control_dependencies([assign_phases]):
-                new_order_parameter = tf.exp(1j*phases)
+                new_order_parameter = tf.exp(imag_number*tf.cast(
+                    new_phases,
+                    self.complex_tf_type
+                    )
+                 )
                 new_order_parameter = tf.reduce_mean(
                     new_order_parameter,
                     axis=1
                 )
-                new_order_parameter = tf.abs(new_order_parameter)
-#               new_rtitem = tf.transpose(new_rtitem)
-                self.assign_order_parameter_list = tf.assign(
-                    order_parameter_list[:, i_transient],
+
+                new_order_parameter_abs = tf.abs(
                     new_order_parameter,
-                    name="assign_order_parameter_list"
+                    name="new_order_parameter_abs"
                 )
 
-    def launch_sparse(self):
+    def run_tf_graph(self):
         order_parameter_evolution = []
         with tf.Session(graph=self.graph) as sess:
             sess.run(tf.global_variables_initializer())
 
-            initial_phases = [
-                self.kuramoto.phases
+            initial_phases = np.array([
+                self.phases
                 for i_l in range(self.kuramoto.num_couplings)
-            ]
+            ]).astype(self.real_np_type)
             sess.run(
                 "assign_initial_phases:0",
                 feed_dict={
@@ -190,28 +222,19 @@ class Heuns:
                 }
             )
 
-            for j_step in range(self.num_temps//self.time_slice):
-                for i in range(self.time_slice):
-                    sess.run(
-                        self.assign_order_parameter_list,
-                        feed_dict={
-                            "i_transient:0": i,
-                        }
+            for i_step in range(self.num_temps):
+
+                if self.num_temps - i_step > self.transient:
+                    sess.run("assign_phases")
+                else:
+                    new_order_parameter0 = sess.run(
+                        "new_order_parameter_abs:0"
                     )
+                    order_parameter_evolution.append(new_order_parameter0)
 
-                order_parameter_evolution.append(
-                    [
-                        sess.run("order_parameter_list:0")
-                    ]
-                )
+        self.order_parameter_evolution = np.array(
+            order_parameter_evolution,
+            dtype=self.real_np_type
+        )
 
-                phases_by_couplings = sess.run("phases:0")
-                sess.run(
-                    "assign_initial_phases:0",
-                    feed_dict={
-                        "phases_placeholder:0": phases_by_couplings,
-                    }
-                )
-
-        sess.close()
-        return order_parameter_evolution
+        return self.order_parameter_evolution
