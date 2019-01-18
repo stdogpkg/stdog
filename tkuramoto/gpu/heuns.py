@@ -51,7 +51,7 @@ class Heuns:
         total_time,
         dt,
         precision,
-        transient
+        transient=False
     ):
 
         self.is_sparse_matrix = isinstance(
@@ -68,7 +68,7 @@ class Heuns:
         self.num_oscilators = adjacency.shape[0]
         self.total_time = total_time
         self.dt = dt
-        self.num_temps = int((total_time/dt))
+
         self.transient = transient
         if precision == 64:
             print("precision 64")
@@ -103,6 +103,10 @@ class Heuns:
             dtype=self.real_np_type
         )
         self.couplings = couplings[:, np.newaxis]
+
+    @property
+    def num_temps(self):
+        return int(self.total_time/self.dt)
 
     def create_tf_graph(self):
         """Creates tensorflow graph. The graph can be acessed trough
@@ -268,7 +272,8 @@ class Heuns:
             new_phases = tf.multiply(dtDiv2, new_phases)
 
             new_phases = tf.add(phases, new_phases, name="new_phases_end")
-
+            new_phases = tf.sin(new_phases)
+            new_phases = tf.asin(new_phases)
             assign_phases = tf.assign(phases, new_phases, name="assign_phases")
             with tf.control_dependencies([assign_phases]):
                 new_order_parameter = tf.exp(imag_number*tf.cast(
@@ -286,7 +291,7 @@ class Heuns:
                     name="new_order_parameter_abs"
                 )
 
-    def run_tf_graph(self):
+    def run_tf_graph(self, return_phases=False):
         """Creates tensorflow graph. The graph can be acessed trough
         Heuns.graph.
 
@@ -321,30 +326,25 @@ class Heuns:
         with tf.Session(graph=self.graph) as sess:
             sess.run(tf.global_variables_initializer())
 
-            initial_phases = np.array([
-                self.phases
-                for i_l in range(self.num_couplings)
-            ]).astype(self.real_np_type)
             sess.run(
                 "assign_initial_phases:0",
                 feed_dict={
-                    "phases_placeholder:0": initial_phases,
+                    "phases_placeholder:0": self.phases,
                 }
             )
 
             for i_step in range(self.num_temps):
 
-                if self.num_temps - i_step > self.transient:
-                    sess.run("assign_phases")
-                else:
+                if self.transient:
                     new_order_parameter0 = sess.run(
                         "new_order_parameter_abs:0"
                     )
                     order_parameter_evolution.append(new_order_parameter0)
+                else:
+                    sess.run("assign_phases")
 
+            self.phases = sess.run("phases:0")
         self.order_parameter_evolution = np.array(
             order_parameter_evolution,
             dtype=self.real_np_type
         )
-
-        return self.order_parameter_evolution
