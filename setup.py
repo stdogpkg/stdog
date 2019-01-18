@@ -9,7 +9,7 @@ setup(
     version="0.0.1",
     packages=find_packages(exclude=["build", ]),
     long_description=README_TEXT,
-    # install_requires=["tensorflow-gpu", "scipy", "numpy"],
+    # install_requires=["tensorflow", "scipy", "numpy"],
     include_package_data=True,
     license="AGPLv3",
     description="Dynamics in large networks",

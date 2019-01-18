@@ -1,21 +1,74 @@
+"""This module illustrates how to write your docstring in OpenAlea
+and other projects related to OpenAlea."""
+
 import tensorflow as tf
 import numpy as np
+from scipy.sparse.coo import coo_matrix
 
 
 class Heuns:
+    """Summary of class here.
+
+    Longer class information....
+    Longer class information....
+
+    Attributes:
+        adjacency: A NxN  matrix
+        phases: "List of size N",
+        omegas: "List of size N",
+        couplings: ""
+        total_time (int) : Total time of simulation
+        dt (int) :
+        precision (int) : Floating Point precision. Should be 64 or 32.
+        transient (int):
+
+    .. seealso:: heuns
+
+    .. note::
+        There are many other Info fields but they may be redundant:
+            * param, parameter, arg, argument, key, keyword: Description of a
+              parameter.
+            * type: Type of a parameter.
+            * raises, raise, except, exception: That (and when) a specific
+              exception is raised.
+            * var, ivar, cvar: Description of a variable.
+            * returns, return: Description of the return value.
+            * rtype: Return type.
+
+    .. note::
+        There are many other directives such as versionadded, versionchanged,
+        rubric, centered, ... See the sphinx documentation for more details.
+
+    Here below is the results of the :func:`function1` docstring.
+
+    """
     def __init__(
         self,
-        kuramoto: "Kuramoto instance",
-        total_time: "Simulation time",
-        dt: "Time step",
-        precision: "number of bits 64 or 32",
-        transient: "transient"
+        adjacency,
+        phases,
+        omegas,
+        couplings,
+        total_time,
+        dt,
+        precision,
+        transient
     ):
 
+        self.is_sparse_matrix = isinstance(
+            adjacency,
+            coo_matrix
+        )
+
+        self.adjacency = adjacency
+
+        self.phases = phases
+        self.omegas = omegas
+        self.couplings = couplings
+        self.num_couplings = len(self.couplings)
+        self.num_oscilators = adjacency.shape[0]
         self.total_time = total_time
         self.dt = dt
         self.num_temps = int((total_time/dt))
-        self.kuramoto = kuramoto
         self.transient = transient
         if precision == 64:
             print("precision 64")
@@ -40,21 +93,48 @@ class Heuns:
             raise Exception("Valid options for precision are: 32 or 64")
 
         omegas = np.array(
-            kuramoto.omegas,
+            self.omegas,
             dtype=self.real_np_type
         )
         self.omegas = omegas[np.newaxis, :]
-        self.phases = kuramoto.phases.copy().astype(self.real_np_type)
+        self.phases = self.phases.astype(self.real_np_type)
         couplings = np.array(
-            kuramoto.couplings,
+            self.couplings,
             dtype=self.real_np_type
         )
         self.couplings = couplings[:, np.newaxis]
 
     def create_tf_graph(self):
+        """Creates tensorflow graph. The graph can be acessed trough
+        Heuns.graph.
+
+        Returns:
+            tensorflow.python.framework.ops.Graph: TensorFlow Graph.
+
+        Example:
+            >>> from tkuramoto.solvers.kuramoto.gpu import Heuns
+            >>> heuns_solver = Heuns(
+            ... kuramoto=kuramoto_instance,
+            ... total_time=2000,
+            ... dt=0.01,
+            ... precision=32,
+            ... transient=1000
+            ... )
+            >>> heuns_solver.create_tf_graph()
+            >>> heuns_solver.graph
+            <tensorflow.python.framework.ops.Graph at 0x7f0d084ebb00>
+
+
+        .. note:: can be useful to emphasize
+            important feature
+        .. seealso:: :class:`MainClass2`
+        .. warning:: arg2 must be non-zero.
+        .. todo:: check that arg2 is non zero.
+
+        """
 
         self.graph = tf.Graph()
-        coo = self.kuramoto.adjacency.tocoo()
+        coo = self.adjacency.tocoo()
         indices = np.mat([coo.row, coo.col]).transpose().astype(np.int64)
         with self.graph.as_default():
 
@@ -86,8 +166,8 @@ class Heuns:
             phases = tf.Variable(
                 np.zeros(
                     (
-                        self.kuramoto.num_couplings,
-                        self.kuramoto.num_oscilators
+                        self.num_couplings,
+                        self.num_oscilators
                      )
                 ),
                 dtype=self.real_tf_type,
@@ -96,8 +176,8 @@ class Heuns:
             phases_placeholder = tf.placeholder(
                 dtype=self.real_tf_type,
                 shape=[
-                    self.kuramoto.num_couplings,
-                    self.kuramoto.num_oscilators
+                    self.num_couplings,
+                    self.num_oscilators
                 ],
                 name="phases_placeholder"
             )
@@ -207,13 +287,43 @@ class Heuns:
                 )
 
     def run_tf_graph(self):
+        """Creates tensorflow graph. The graph can be acessed trough
+        Heuns.graph.
+
+        Returns:
+            numpy.ndarray (float): order parameter evolution
+
+        shape is (num. transient, num. couplings)
+
+
+        Example:
+            >>> from tkuramoto.solvers.kuramoto.gpu import Heuns
+            >>> heuns_solver = Heuns(
+            ... kuramoto=kuramoto_instance,
+            ... total_time=2000,
+            ... dt=0.01,
+            ... precision=32,
+            ... transient=1000
+            ... )
+            >>> heuns_solver.create_tf_graph()
+            >>> heuns_solver.graph
+            <tensorflow.python.framework.ops.Graph at 0x7f0d084ebb00>
+
+
+        .. note:: can be useful to emphasize
+            important feature
+        .. seealso:: :class:`MainClass2`
+        .. warning:: wtf
+
+
+        """
         order_parameter_evolution = []
         with tf.Session(graph=self.graph) as sess:
             sess.run(tf.global_variables_initializer())
 
             initial_phases = np.array([
                 self.phases
-                for i_l in range(self.kuramoto.num_couplings)
+                for i_l in range(self.num_couplings)
             ]).astype(self.real_np_type)
             sess.run(
                 "assign_initial_phases:0",

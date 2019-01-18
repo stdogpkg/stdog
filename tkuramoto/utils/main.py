@@ -4,6 +4,27 @@ from scipy.sparse import coo_matrix
 
 
 def ig2sparse(G, transpose=False, attr=None, precision=32):
+    """Example function with types documented in the docstring.
+
+    Args:
+        G (igraph): The first parameter.
+        transpose (bool): The second parameter.
+        attr (bool): The second parameter.
+        precision (int): The second parameter.
+
+    Returns:
+        bool: The return value. True for success, False otherwise.
+
+
+
+    .. note:: can be useful to emphasize
+        important feature
+    .. seealso:: :class:`MainClass2`
+    .. warning:: arg2 must be non-zero.
+    .. todo:: check that arg2 is non zero.
+
+    """
+
     if attr:
         source, target, data = zip(*[
             (e.source, e.target, e[attr])
