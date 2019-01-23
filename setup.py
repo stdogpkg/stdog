@@ -5,14 +5,14 @@ README_TEXT = readme.read()
 readme.close()
 
 setup(
-    name="tkuramoto",
+    name="stDoG",
     version="0.0.1",
     packages=find_packages(exclude=["build", ]),
     long_description=README_TEXT,
     # install_requires=["tensorflow", "scipy", "numpy"],
     include_package_data=True,
     license="AGPLv3",
-    description="Dynamics in large networks",
+    description="Structure and Dynamics on Graphs",
     author_email="messias.physics@gmail.com",
     author="Bruno Messias; Thomas K. Peron",
     # download_url=

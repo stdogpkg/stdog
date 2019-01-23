@@ -51,7 +51,8 @@ class Heuns:
         total_time,
         dt,
         precision,
-        transient=False
+        transient=False,
+        frustration=None,
     ):
 
         self.is_sparse_matrix = isinstance(
@@ -64,14 +65,16 @@ class Heuns:
         self.phases = phases
         self.omegas = omegas
         self.couplings = couplings
-        self.num_couplings = len(self.couplings)
-        self.num_oscilators = adjacency.shape[0]
+        self.frustration = frustration
+        self.transient = transient
         self.total_time = total_time
         self.dt = dt
-        self.i = 0
-        self.transient = transient
+
+        self.num_couplings = len(self.couplings)
+        self.num_oscilators = adjacency.shape[0]
+
+
         if precision == 64:
-            print("precision 64")
             self.complex_np_type = np.complex128
             self.complex_tf_type = tf.complex128
 
