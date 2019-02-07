@@ -1,5 +1,4 @@
 import numpy as np
-from tensorflow import SparseTensor
 from scipy.sparse import coo_matrix
 
 
@@ -58,8 +57,4 @@ def ig2sparse(G, transpose=False, attr=None, precision=32):
     return L
 
 
-def sparse_matrix2sparse_tensor(matrix):
-
-    coo = matrix.tocoo()
-    indices = np.mat([coo.row, coo.col]).transpose()
-    return SparseTensor(indices, coo.data, coo.shape, )
+__all__ = ["ig2sparse"]

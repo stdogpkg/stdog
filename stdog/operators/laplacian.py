@@ -1,4 +1,3 @@
-from scipy.sparse import csr_matrix
 from scipy import sparse
 import numpy as np
 
@@ -15,12 +14,12 @@ def magnetic(W, charge=1/3., normed=False, return_all=False):
     T = 1j*theta*A.T
     np.exp(T.data, out=T.data)
 
-    T = csr_matrix(T)
+    T = sparse.csr_matrix(T)
 
     # pointwise
     L = - Ws.multiply(T)
 
-    degree_list = csr_matrix.sum(Ws, axis=1).tolist()
+    degree_list = sparse.csr_matrix.sum(Ws, axis=1).tolist()
     if normed:
         degree_list = np.power(degree_list, -1/2.).flatten()
         degree = sparse.diags(degree_list)
@@ -37,4 +36,3 @@ def magnetic(W, charge=1/3., normed=False, return_all=False):
         return L, A, T
 
     return L
-    
