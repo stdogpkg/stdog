@@ -37,59 +37,41 @@ def heuns_evolve_m(phases, frustration, adjacency, couplings):
 
         return M
 
-
-def heuns_step(phases, frustration, adjacency, couplings, omegas,
-    dt, omegasDouble, dtDiv2, pi2, mod_phases=True):
-    with tf.name_scope("heuns_step"):
-        M = heuns_evolve_m(phases, frustration, adjacency, couplings)
-        temporary_phases = tf.add(
+def update_phases(phases, dt, M, omegas):
+    return tf.add(
             phases,
             tf.multiply(
                 dt,
                 tf.add(omegas, M)
             )
         )
-        # temporary_phases = tfmod(temporary_phases, pi2)
+def heuns_step(phases, frustration, adjacency, couplings, omegas,
+    dt, omegasDouble, dtDiv2, pi2):
+    with tf.name_scope("heuns_step"):
+        M = heuns_evolve_m(phases, frustration, adjacency, couplings)
+
+        temporary_phases = update_phases(phases, dt, M, omegas)
 
         M2 = heuns_evolve_m(temporary_phases, frustration, adjacency, couplings)
 
         M = tf.add(M2, M)
 
-        new_phases = tf.add(
-            phases,
-            tf.multiply(
-                dtDiv2,
-                tf.add(M, omegasDouble)
-            )
-        )
-
-        if mod_phases:
-            new_phases = tfmod(new_phases, pi2)
+        # new_phases = xla.compile(computation=update_phases, inputs=(phases, dtDiv2, M, omegasDouble))[0]
+        new_phases = update_phases(phases, dtDiv2, M, omegasDouble)
 
         return new_phases
 
 
-def heuns(phases, frustration, adjacency, couplings, omegas, dt,
+def heuns_while(phases, frustration, adjacency, couplings, omegas, dt,omegasDouble, dtDiv2, pi2,
         num_couplings, num_temps, transient=False, tf_float=tf.float32,
         tf_complex=tf.complex64):
     with tf.name_scope("heuns"):
         with tf.name_scope("init"):
             i_dt = tf.constant(0, dtype=tf.int64)
-            omegas = omegas[tf.newaxis:, ]
-            couplings = couplings[:, tf.newaxis]
+
             order_parameters = tf.zeros(
                 (num_couplings, 1),
                 dtype=tf_float
-            )
-            pi2 = tf.constant(
-                2*np.pi,
-                dtype=tf_float
-            )
-            dtDiv2 = tf.divide(
-                dt, 2.
-            )
-            omegasDouble = tf.multiply(
-                    2., omegas
             )
 
         def cond(phases, order_parameters, dt, i_dt, num_temps):
@@ -107,6 +89,7 @@ def heuns(phases, frustration, adjacency, couplings, omegas, dt,
                 new_order_parameter = tf.reshape(
                     new_order_parameter, (num_couplings, 1)
                 )
+
                 order_parameters = tf.concat(
                     [
                         order_parameters, new_order_parameter
@@ -143,4 +126,4 @@ def heuns(phases, frustration, adjacency, couplings, omegas, dt,
         return phases, order_parameters
 
 
-__all__ = ["heuns_evolve_vec", "heuns_evolve_m", "heuns_step", "heuns"]
+__all__ = ["heuns_evolve_vec", "heuns_evolve_m", "heuns_step", "heuns_while"]
