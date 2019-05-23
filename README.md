@@ -7,7 +7,7 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 To install stDoG, download the package and type at the command line: 
 
 ```
-python isntall setup.py
+python install setup.py
 ```
 
 ## Example
