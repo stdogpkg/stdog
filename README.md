@@ -10,6 +10,8 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 
 ## Example
 
+
+
 ```python
 ...
 ```
@@ -21,6 +23,7 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 
 ## References
 
+Thomas Peron, Bruno Messias, Angélica S. Mata, Francisco A. Rodrigues, and Yamir Moreno. On the onset of synchronization of Kuramoto oscillators in scale-free networks. [arXiv:1905.02256](https://arxiv.org/abs/1905.02256) (2019).
 
 ## Acknowledgements
 
