@@ -15,6 +15,9 @@ python install setup.py
 
 
 ```python
+
+from tkuramoto.utils import ig2sparse #Function to convert igraph format to sparse matrix
+from tkuramoto.gpu.heuns import Heuns
 ...
 ```
 
