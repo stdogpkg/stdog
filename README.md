@@ -15,10 +15,64 @@ python install setup.py
 
 
 ```python
+import numpy as np
+import igraph as ig
+from stdog.utils.misc import ig2sparse  #Function to convert igraph format to sparse matrix
+from stdog.dynamics.kuramoto import Heuns
 
-from tkuramoto.utils import ig2sparse #Function to convert igraph format to sparse matrix
-from tkuramoto.gpu.heuns import Heuns
-...
+
+#Graph and Kuramoto Parameters
+N = 2000
+per = 3/N
+D = 1.0 
+num_couplings = 20
+
+G  = ig.Graph.Erdos_Renyi(N, per)
+N = G.vcount()
+j = np.arange(1,N+1)
+
+omegas = D*np.tan((j*np.pi)/N - ((N+1.)*np.pi)/(2.0*N)  )
+adj = ig2sparse(G)
+
+couplings = np.linspace(0.0,4.,num_couplings)
+phases = np.random.uniform(-np.pi,np.pi,N, )
+phases =  np.array([
+    np.random.uniform(-np.pi,np.pi,N)
+    for i_l in range(num_couplings)
+
+],dtype=np.float32)
+
+
+# Simulation parameters
+precision =32
+num_temps = 2000
+dt = 0.1
+total_time = dt*num_temps
+transient = False
+
+# stDoG code
+heuns_0 = Heuns(
+    adj,
+    phases,
+    omegas, 
+    couplings,
+    total_time,
+    dt,
+    device="/cpu:0",
+    precision=precision,
+    transient = transient,
+    use_while=False
+
+)
+
+heuns_0.run()
+
+transient=True
+heuns_0.transient = transient
+heuns_0.total_time = total_time
+heuns_0.run()
+order_parameter_list = heuns_0.order_parameter_list
+
 ```
 
 ## About
