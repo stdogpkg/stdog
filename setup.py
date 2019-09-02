@@ -9,6 +9,7 @@ setup(
     version="1.0.1",
     packages=find_packages(exclude=["build", ]),
     long_description=README_TEXT,
+    long_description_content_type="text/markdown",
     install_requires=["tensorflow", "scipy", "numpy"],
     include_package_data=True,
     license="MIT",
@@ -25,7 +26,9 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3",
-        "Topic :: Physics ::  Mathematics :: SCIENTIFIC/ENGINEERING",
+        "Topic :: Scientific/Engineering :: Physics",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Topic :: Scientific/Engineering :: Information Analysis"
     ],
     url="https://github.com/stdogpkg/stdog"
 )
