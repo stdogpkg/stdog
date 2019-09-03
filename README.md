@@ -1,4 +1,5 @@
-# stDoG - Structure and Dynamics on Graphs (Beta)
+# ![](stdog.png) 
+## Structure and Dynamics on Graphs (Beta)
 
 stDoG is a Tensorflow Python module for efficiently simulating phase oscillators (the Kuramoto model) on large heterogeneous networks. It provides an implementation for integrating differential equations using TensorFlow, making simulations suitable to be performed on GPUs.
 
@@ -7,7 +8,7 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 To install stDoG, download the package and type at the command line: 
 
 ```
-python install setup.py
+pip install stdog
 ```
 
 ## Example
