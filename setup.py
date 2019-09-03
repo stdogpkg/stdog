@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
-readme = open('README.md', 'r')
-README_TEXT = readme.read()
-readme.close()
+
+with open("README.md", "r") as f:
+    README_TEXT = f.read()
 
 setup(
     name="stdog",
