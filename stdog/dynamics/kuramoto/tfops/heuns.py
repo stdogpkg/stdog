@@ -37,6 +37,7 @@ def heuns_evolve_m(phases, frustration, adjacency, couplings):
 
         return M
 
+
 def update_phases(phases, dt, M, omegas):
     return tf.add(
             phases,
@@ -45,24 +46,30 @@ def update_phases(phases, dt, M, omegas):
                 tf.add(omegas, M)
             )
         )
-def heuns_step(phases, frustration, adjacency, couplings, omegas,
-    dt, omegasDouble, dtDiv2, pi2):
+
+
+def heuns_step(
+        phases, frustration, adjacency, couplings, omegas, dt, omegasDouble,
+        dtDiv2, pi2):
+
     with tf.name_scope("heuns_step"):
         M = heuns_evolve_m(phases, frustration, adjacency, couplings)
 
         temporary_phases = update_phases(phases, dt, M, omegas)
 
-        M2 = heuns_evolve_m(temporary_phases, frustration, adjacency, couplings)
+        M2 = heuns_evolve_m(
+            temporary_phases, frustration, adjacency, couplings)
 
         M = tf.add(M2, M)
 
-        # new_phases = xla.compile(computation=update_phases, inputs=(phases, dtDiv2, M, omegasDouble))[0]
         new_phases = update_phases(phases, dtDiv2, M, omegasDouble)
 
         return new_phases
 
 
-def heuns_while(phases, frustration, adjacency, couplings, omegas, dt,omegasDouble, dtDiv2, pi2,
+def heuns_while(
+        phases, frustration, adjacency, couplings, omegas, dt,
+        omegasDouble, dtDiv2, pi2,
         num_couplings, num_temps, transient=False, tf_float=tf.float32,
         tf_complex=tf.complex64):
     with tf.name_scope("heuns"):
@@ -78,7 +85,8 @@ def heuns_while(phases, frustration, adjacency, couplings, omegas, dt,omegasDoub
             return tf.less(i_dt, num_temps)
 
         def body(phases, order_parameters, dt, i_dt, num_temps):
-            new_phases = heuns_step(phases, frustration, adjacency, couplings,
+            new_phases = heuns_step(
+                phases, frustration, adjacency, couplings,
                 omegas, dt, omegasDouble, dtDiv2, pi2)
 
             if transient:
@@ -126,4 +134,5 @@ def heuns_while(phases, frustration, adjacency, couplings, omegas, dt,omegasDoub
         return phases, order_parameters
 
 
-__all__ = ["heuns_evolve_vec", "heuns_evolve_m", "heuns_step", "heuns_while"]
+__all__ = [
+    "heuns_evolve_vec", "heuns_evolve_m", "heuns_step", "heuns_while"]
