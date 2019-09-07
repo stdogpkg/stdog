@@ -1,5 +1,5 @@
 import numpy as np
-try: 
+try:
     import cukuramoto
 except ImportError:
     pass
@@ -15,7 +15,7 @@ class CUHeuns:
         total_time,
         dt,
         transient=False,
-        block_size = 1024,
+        block_size=1024,
     ):
 
         self.adjacency = adjacency
@@ -25,12 +25,11 @@ class CUHeuns:
         self.transient = transient
         self.total_time = total_time
         self.dt = dt
-        
         self.num_couplings = len(self.couplings)
         self.num_oscilators = adjacency.shape[0]
-        
+
         self.block_size = block_size
-        
+
         self.order_parameter_list = np.array([])
         self.create_simulation()
 
@@ -54,17 +53,18 @@ class CUHeuns:
             self.num_oscilators, self.block_size, self.omegas, 
             self.__phases.flatten(), self.couplings, indices, ptr)
 
-        self.simulation = simulation 
-
+        self.simulation = simulation
 
     def run(self):
 
         if self.transient:
-          self.order_parameter_list = self.simulation.get_order_parameter(
+            order_parameter_list = self.simulation.get_order_parameter(
                 self.num_temps, self.dt)
+            self.order_parameter_list = order_parameter_list.reshape(
+                (self.num_couplings, self.num_temps)
+            )
         else:
-          self.simulation.heuns(
+            self.simulation.heuns(
                 self.num_temps, self.dt)
-                        
 
 __all__ = ["CUHeuns"]
