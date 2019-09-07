@@ -8,6 +8,10 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 ```
 pip install stdog
 ```
+[stdogpkg/cukuramoto](https://github.com/stdogpkg/cukuramoto)
+```
+pip install cukuramoto
+```
 
 ## 2 - Examples
 
@@ -38,44 +42,58 @@ phases =  np.array([
 
 
 precision =32
-num_temps = 2000
-dt = 0.1
+
+dt = 0.01
+num_temps = 50000
 total_time = dt*num_temps
+total_time_transient = total_time
 transient = False
 ```
 
 ```python
 from stdog.dynamics.kuramoto import Heuns
 
-heuns_0 = Heuns(
-    adj,
-    phases,
-    omegas, 
-    couplings,
-    total_time,
-    dt,
+heuns_0 = Heuns(adj, phases, omegas, couplings, total_time, dt,         
     device="/gpu:0", # or /cpu:
-    precision=precision,
-    transient = transient,
-    use_while=False
-)
+    precision=precision, transient=transient)
 
 heuns_0.run()
-
-transient=True
-heuns_0.transient = transient
-heuns_0.total_time = total_time
+heuns_0.transient = True
+heuns_0.total_time = total_time_transient
 heuns_0.run()
 order_parameter_list = heuns_0.order_parameter_list # (num_couplings, total_time//dt)
-
 ```
+```python
+import matplotlib.pyplot as plt
 
-![](imgs/heuns_tf.png)
+r = np.mean(order_parameter_list, axis=1)
+stdr = np.std(order_parameter_list, axis=1)
+
+plt.ion()
+fig, ax1 = plt.subplots()
+ax1.plot(couplings,r,'.-')
+ax2 = ax1.twinx()
+ax2.plot(couplings,stdr,'r.-')
+plt.show()
+```
+![](docs/imgs/heuns_tf.png)
 
 #### CUDA - Faster than Tensorflow implementation
 
 
+```python
+from stdog.dynamics.kuramoto.cuheuns import CUHeuns as cuHeuns
 
+heuns_0 = cuHeuns(adj, phases, omegas,  couplings,
+    total_time, dt, block_size = 1024, transient = False)
+
+heuns_0.run()
+
+heuns_0.transient = True
+heuns_0.total_time = total_time_transient
+heuns_0.run()
+order_parameter_list = heuns_0.order_parameter_list #
+```
 
 ## 3 - How to cite
 
