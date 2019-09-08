@@ -8,10 +8,7 @@ stDoG is a Tensorflow Python module for efficiently simulating phase oscillators
 ```
 pip install stdog
 ```
-[stdogpkg/cukuramoto](https://github.com/stdogpkg/cukuramoto)
-```
-pip install cukuramoto
-```
+
 
 ## 2 - Examples
 
@@ -80,6 +77,11 @@ plt.show()
 
 #### CUDA - Faster than Tensorflow implementation
 
+If CUDA is available. You can install our another package,
+[stdogpkg/cukuramoto](https://github.com/stdogpkg/cukuramoto) (C)
+```
+pip install cukuramoto
+```
 
 ```python
 from stdog.dynamics.kuramoto.cuheuns import CUHeuns as cuHeuns
