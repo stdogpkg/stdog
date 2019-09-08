@@ -10,7 +10,7 @@ setup(
     packages=find_packages(exclude=["build", ]),
     long_description=README_TEXT,
     long_description_content_type="text/markdown",
-    install_requires=["tensorflow", "scipy", "numpy"],
+    install_requires=["tensorflow", "scipy", "numpy", "emate"],
     include_package_data=True,
     license="MIT",
     description="Structure and Dynamics on Graphs",
