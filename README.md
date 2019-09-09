@@ -179,13 +179,6 @@ vals_laplacian = np.linalg.eigvalsh(L).real
 
 exact_entropy =  entropy(vals_laplacian)
 
-
-def trace_function(eig_vals):
-  def entropy(val):
-    return tf.cond(val>0, lambda:-val*tf.log(val), lambda: 0.)
-  
-  return tf.map_fn(entropy, eig_vals)
- 
 L_sparse = scipy.sparse.coo_matrix(L)
     
 num_vecs = 100
