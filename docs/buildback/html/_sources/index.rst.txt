@@ -7,10 +7,7 @@ Welcome to stdog's documentation!
     :maxdepth: 2
     :caption: Contents:
 
-    examples
-    dynamics
-    spectra
-    tools    
+    modules
 
 
 Indices and tables

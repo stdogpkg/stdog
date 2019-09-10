@@ -1,26 +1,38 @@
+"""
+misc
+=====
+something
+
+"""
+
+"""
+Tools
+======
+
+Contains tools to help some boring tasks
+"""
 import numpy as np
 from scipy.sparse import coo_matrix
 
 
 def ig2sparse(G, transpose=False, attr=None, precision=32):
-    """Example function with types documented in the docstring.
+    """Given an igraph instance returns the sparse adjacency matrix
+    in CSR format.
 
-    Args:
-        G (igraph): The first parameter.
-        transpose (bool): The second parameter.
-        attr (bool): The second parameter.
-        precision (int): The second parameter.
+    Parameters
+    ----------
+        G: igraph instance
+        transpose : bool 
+            If the adjacency matrix should be transposed or not
+        attr : str 
+            The name of weight attribute
+        precision : int
+             The precision used to store the weight attributes
 
-    Returns:
-        bool: The return value. True for success, False otherwise.
+    Returns
+    --------
+        L : csr_matrix
 
-
-
-    .. note:: can be useful to emphasize
-        important feature
-    .. seealso:: :class:`MainClass2`
-    .. warning:: arg2 must be non-zero.
-    .. todo:: check that arg2 is non zero.
 
     """
 

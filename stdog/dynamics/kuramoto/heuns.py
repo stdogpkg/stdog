@@ -1,3 +1,10 @@
+"""
+Heun's  in Tensorflow
+=======================================
+
+alguma coisa
+"""
+
 import numpy as np
 import tensorflow as tf
 
@@ -6,6 +13,25 @@ from .tfops.misc import get_order_parameter
 
 
 class Heuns:
+    """This class allow efficiently simulating phase oscillators 
+    (the Kuramoto model) on large heterogeneous networks using the 
+    Heun's method implemented in TensorFlow.
+
+    Attributes
+    ----------
+        adjacency: coo matrix
+        phases: np.ndarray
+        omegas: np.ndarray
+        couplings: np.ndarray
+        total_time: float
+        dt: float
+        transient: bool
+        frustation: bool
+        device: str
+        log: bool
+        use_while: bool
+
+    """
     def __init__(
         self,
         adjacency,

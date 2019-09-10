@@ -12,23 +12,22 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
 import os
 import sys
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
+sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = 'tkuramoto'
-copyright = '2018, Bruno Messias; Thomas K. Peron'
-author = 'Bruno Messias; Thomas K. Peron'
+project = 'stDoG'
+copyright = '2019, Bruno Messias; Thomas Peron'
+author = 'Bruno Messias; Thomas Peron'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = 'beta'
+release = '1.0.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -42,11 +41,27 @@ release = 'beta'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+   # 'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
     'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
+    #'sphinxcontrib.napoleon',
     'sphinx.ext.napoleon',
-    'sphinx.ext.todo'
 ]
+napoleon_google_docstring = True
+
+napoleon_numpy_docstring = True
+napoleon_include_init_with_doc = False
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,11 +84,11 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path .
+# This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = None
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -81,8 +96,9 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
-#html_theme = "sphinx_rtd_theme"
+
+html_theme = 'sphinx_rtd_theme'
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -109,7 +125,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'tkuramotodoc'
+htmlhelp_basename = 'stDoGdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -136,8 +152,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'tkuramoto.tex', 'tkuramoto Documentation',
-     'Bruno Messias; Thomas K. Peron', 'manual'),
+    (master_doc, 'stDoG.tex', 'stDoG Documentation',
+     'Bruno Messias; Thomas Peron', 'manual'),
 ]
 
 
@@ -146,7 +162,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'tkuramoto', 'tkuramoto Documentation',
+    (master_doc, 'stdog', 'stDoG Documentation',
      [author], 1)
 ]
 
@@ -157,10 +173,38 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'tkuramoto', 'tkuramoto Documentation',
-     author, 'tkuramoto', 'One line description of project.',
+    (master_doc, 'stDoG', 'stDoG Documentation',
+     author, 'stDoG', 'One line description of project.',
      'Miscellaneous'),
 ]
 
 
+# -- Options for Epub output -------------------------------------------------
+
+# Bibliographic Dublin Core info.
+epub_title = project
+
+# The unique identifier of the text. This can be a ISBN number
+# or the project homepage.
+#
+# epub_identifier = ''
+
+# A unique identification for the text.
+#
+# epub_uid = ''
+
+# A list of files that should not be packed into the epub file.
+epub_exclude_files = ['search.html']
+
+
 # -- Extension configuration -------------------------------------------------
+
+# -- Options for intersphinx extension ---------------------------------------
+
+# Example configuration for intersphinx: refer to the Python standard library.
+#intersphinx_mapping = {'https://docs.python.org/': None}
+
+# -- Options for todo extension ----------------------------------------------
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = True

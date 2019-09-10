@@ -1,3 +1,9 @@
+"""
+Heun's CUDA
+===========
+
+alguma coisa
+"""
 import numpy as np
 try:
     import cukuramoto
