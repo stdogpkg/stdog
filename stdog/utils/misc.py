@@ -1,11 +1,4 @@
 """
-misc
-=====
-something
-
-"""
-
-"""
 Tools
 ======
 
@@ -17,7 +10,7 @@ from scipy.sparse import coo_matrix
 
 def ig2sparse(G, transpose=False, attr=None, precision=32):
     """Given an igraph instance returns the sparse adjacency matrix
-    in CSR format.
+    in COO format.
 
     Parameters
     ----------
@@ -31,7 +24,7 @@ def ig2sparse(G, transpose=False, attr=None, precision=32):
 
     Returns
     --------
-        L : csr_matrix
+        L : coo_matrix
 
 
     """
@@ -47,9 +40,11 @@ def ig2sparse(G, transpose=False, attr=None, precision=32):
             for e in G.es
         ])
         data = np.ones(len(source)).astype('int').tolist()
+
     if not G.is_directed():
         source, target = source + target, target + source
         data = data + data
+
     if precision == 64:
         np_type = np.float64
     elif precision == 32:
@@ -66,6 +61,7 @@ def ig2sparse(G, transpose=False, attr=None, precision=32):
             (data, (source, target)),
             shape=[G.vcount(), G.vcount()]
         )
+
     return L
 
 
