@@ -47,8 +47,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinxcontrib.napoleon',
-    #'sphinx.ext.napoleon',
+    #'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
 ]
 napoleon_google_docstring = False
 
