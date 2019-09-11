@@ -1,5 +1,5 @@
 from stdog import dynamics
-#from stdog import spectra
+from stdog import spectra
 from stdog import utils
 
 
