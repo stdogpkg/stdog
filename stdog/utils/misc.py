@@ -24,7 +24,7 @@ def ig2sparse(G, transpose=False, attr=None, precision=32):
 
     Returns
     --------
-        L : coo_matrix
+        L : COO Sparse matrix
 
 
     """
