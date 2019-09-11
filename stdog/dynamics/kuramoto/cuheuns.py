@@ -1,6 +1,11 @@
 """
 Heun's CUDA
 ===========
+
+allow efficiently simulating phase oscillators 
+(the Kuramoto model) on large heterogeneous networks using the 
+Heun's method with a "pure" CUDA implementation. Should be
+faster than tensorflow implementation.
 """
 import numpy as np
 try:
