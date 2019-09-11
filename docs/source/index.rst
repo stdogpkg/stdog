@@ -33,8 +33,9 @@ The source code is available at <http://github.com/stdogpkg>`.
 .. toctree::
     :maxdepth: 2
     :caption: Modules:
-
+    
     dynamics
+    spectra
     utils    
 
 
