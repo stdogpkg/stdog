@@ -1,5 +1,4 @@
-==========
-Tools
+Utils
 ==========
 
 .. automodule:: stdog.utils.misc

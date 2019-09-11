@@ -13,7 +13,7 @@ a matrix function is given by
     \mathrm{tr}(f(A)) = \sum\limits_{i=0}^{|V|} f(\lambda_i)
 
 The methods for calculating such traces functions have
-cubic computational complexity, :math:`O(|V|^3)`.
+cubic computational complexity lower bound,  :math:`O(|V|^3)`.
 Therefore, it is not feasible for  large networks. One way
 to overcome such computational complexity is use polynomial
 expansion and stochastic approximations to get the results
@@ -26,7 +26,8 @@ from emate.symmetric.slq import pyslq as slq
 
 
 def estrada_index(L, num_vecs=100, num_steps=50, device="/gpu:0"):
-    """Compute the estarda index
+    """ Given the Laplacian matrix :math:`L \in \mathbb R^{|V|\\times |V|}` s.t. for all :math:`v \in \mathbb R^{|V|}`  we have :math:`v^T L v > 0` the Estrada Index
+    is given by
 
     .. math::
 
@@ -50,9 +51,11 @@ def estrada_index(L, num_vecs=100, num_steps=50, device="/gpu:0"):
     References
     ----------
 
-    .. [1]Ubaru, S., Chen, J., & Saad, Y. (2017).
-        Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. 
-        SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.
+    1 - Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. 
+    SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.
+
+
+
     """
     def trace_function(eig_vals):
         return tf.exp(eig_vals)
@@ -68,7 +71,12 @@ def entropy(L_sparse, num_vecs=100, num_steps=50, device="/gpu:0"):
 
     .. math::
 
-      \mathrm{tr}\exp(L) = \sum\limits_{i=0}^{|V|} e^{\lambda_i}
+      \sum\limits_{i=0}^{|V|} f(\lambda_i)
+      
+      f(\lambda) = \\begin{cases}
+        -\lambda \log_2\lambda  \ \ if \  \lambda  > 0; \\newline
+        0,\  \ otherwise
+      \end{cases}
 
     Parameters
     ----------
@@ -83,7 +91,7 @@ def entropy(L_sparse, num_vecs=100, num_steps=50, device="/gpu:0"):
     
     Returns
     -------
-        approximated_estrada_index: float
+        approximated_spectral_entropy: float
 
     References
     ----------

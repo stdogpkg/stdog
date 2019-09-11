@@ -1,5 +1,5 @@
 """
-Tools
+Misc
 ======
 
 Contains tools to help some boring tasks

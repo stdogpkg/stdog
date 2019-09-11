@@ -1,8 +1,6 @@
 """
 Heun's  in Tensorflow
 =======================================
-
-alguma coisa
 """
 
 import numpy as np
@@ -19,17 +17,18 @@ class Heuns:
 
     Attributes
     ----------
-        adjacency: coo matrix
-        phases: np.ndarray
-        omegas: np.ndarray
-        couplings: np.ndarray
-        total_time: float
-        dt: float
-        transient: bool
-        frustation: bool
-        device: str
-        log: bool
-        use_while: bool
+        adjacency : coo matrix
+        phases : np.ndarray
+        omegas : np.ndarray
+        couplings : np.ndarray
+        total_time : float
+        dt : float
+        transient : bool
+        frustation : bool
+        device : str
+        log : bool
+        use_while : bool
+        order_parameter_list : np.ndarray
 
     """
     def __init__(
@@ -132,6 +131,10 @@ class Heuns:
             self.__transient = transient
 
     def create_tf_graph(self):
+        """
+        This method is responsible to create the tensorflow graph
+
+        """
         with tf.device(self.device):
             self.graph = tf.Graph()
 
@@ -235,7 +238,11 @@ class Heuns:
                             )
 
     def run(self):
-
+        """
+        Run the algorithm and update the phases.
+        If transiet is set to True, then  the order parameters is
+        calculated and  the array order_parameter_list is updated.
+        """
         coo = self.adjacency.tocoo()
 
         sp_values = np.array(coo.data, dtype=self.real_np_type)

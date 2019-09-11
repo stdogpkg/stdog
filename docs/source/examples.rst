@@ -47,7 +47,7 @@ Creating the data and setting the variables
     total_time_transient = total_time
     transient = False
 
-Solving the diferential equation in tensorflow
+Using  a Tensorflow implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -83,10 +83,10 @@ Plotting the result
 .. image:: imgs/heuns_tf.png 
 
 
-Solving the diferential equation in CUDA 
+Using a pure CUDA implementation (faster)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For that, you need install our another package, 
+For that, you need to install our another package, 
 `cukuramoto <http://github.com/stdogpkg/cukuramoto>`_
 
 .. code-block:: bash
@@ -109,6 +109,7 @@ For that, you need install our another package,
  
 Spectra
 =======
+
 
 Spectral Density
 ----------------
@@ -156,3 +157,92 @@ trace estimator + kernel smoothing.
 
 Trace Functions
 ---------------
+
+Given a positive definite matrix :math:`A \in \mathbb R^{|V|\times|V|}`,
+which has the set of eigenvalues given by :math:`\{\lambda_i\}` a trace of
+a matrix function is given by
+
+.. math::
+
+    \mathrm{tr}(f(A)) = \sum\limits_{i=0}^{|V|} f(\lambda_i)
+
+The methods for calculating such traces functions have a
+cubic computational complexity lower bound,  :math:`O(|V|^3)`.
+Therefore, it is not feasible for  large networks.
+
+Until now, there is two approachs to ovecome such high computational 
+complexity 
+in stDoG. The first approach is use the spectral density obtained by the KPM
+method. The second approach, which can be more suitable, is using the Stochastic
+Lanczos Quadrature (SLQ) proposed at[1]. The next examples show how to use the SLQ in
+stDoG
+
+Spectral Entropy
+^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    import scipy
+    import scipy.sparse
+    import igraph as ig
+    import numpy as np
+
+    N = 3000
+    G = ig.Graph.Erdos_Renyi(N, 3/N) 
+
+.. code-block:: python
+
+    from stdog.spectra.trace_function import entropy as slq_entropy
+
+    def entropy(eig_vals):
+    s = 0.
+    for val in eig_vals:
+        if val > 0:
+        s += -val*np.log(val)
+    return s
+
+    L = np.array(G.laplacian(normalized=True), dtype=np.float64)
+    vals_laplacian = np.linalg.eigvalsh(L).real
+
+    exact_entropy =  entropy(vals_laplacian)
+
+    L_sparse = scipy.sparse.coo_matrix(L)
+        
+    num_vecs = 100
+    num_steps = 50
+    approximated_entropy = slq_entropy(
+        L_sparse, num_vecs, num_steps, device="/cpu:0")
+
+    approximated_entropy, exact_entropy
+
+
+The above code returns
+
+.. code-block:: bash
+
+    (-509.46283, -512.5283224633046)
+
+
+Custom Trace Function
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    import tensorflow as tf
+
+    from stdog.spectra.trace_function import slq 
+    def trace_function(eig_vals):
+        return tf.exp(eig_vals)
+ 
+    
+    num_vecs = 100
+    num_steps = 50
+    approximated_trace_function, _ = slq(L_sparse, num_vecs, num_steps,  trace_function)
+
+
+References
+-------------
+
+    1 - Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. 
+    SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.
+
