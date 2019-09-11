@@ -13,7 +13,7 @@ class CUHeuns:
     """This class allow efficiently simulating phase oscillators 
     (the Kuramoto model) on large heterogeneous networks using the 
     Heun's method with a "pure" CUDA implementation. Should be
-    fater than tensorflow implementation.
+    faster than tensorflow implementation.
 
     Attributes
     ----------
@@ -109,7 +109,7 @@ class CUHeuns:
 
         simulation = cukuramoto.Heuns(
             self.num_oscilators, self.block_size, self.omegas, 
-            self.__phases.flatten(), self.couplings, indices, ptr)
+            self._phases.flatten(), self.couplings, indices, ptr)
 
         self.simulation = simulation
 
