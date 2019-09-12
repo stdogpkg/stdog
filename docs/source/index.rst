@@ -35,6 +35,7 @@ The source code is available at <http://github.com/stdogpkg>`.
     :caption: Modules:
     
     dynamics
+    spectra
     utils    
 
 
