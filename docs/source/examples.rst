@@ -110,6 +110,11 @@ For that, you need to install our another package,
 References
 ----------
 
+[1] - Thomas Peron, Bruno Messias, Angélica S. Mata, Francisco A. Rodrigues,
+and Yamir Moreno. On the onset of synchronization of Kuramoto oscillators in
+scale-free networks. arXiv:1905.02256 (2019).
+
+
 
 Spectra
 =======
