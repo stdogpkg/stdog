@@ -132,7 +132,7 @@ class Heuns:
 
     def create_tf_graph(self):
         """
-        This method is responsible to create the tensorflow graph
+        This method creates the tensorflow graph
 
         """
         with tf.device(self.device):
@@ -238,8 +238,8 @@ class Heuns:
                             )
 
     def run(self):
-        """
-        Run the algorithm and update the phases.
+        """This runs the algorithm and updates the phases.
+
         If transiet is set to True, then  the order parameters is
         calculated and  the array order_parameter_list is updated.
         """
