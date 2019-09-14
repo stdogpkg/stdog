@@ -1,3 +1,9 @@
+.. meta::
+    :description lang=en:
+        stDoG is a package which can be used to study
+        dynamical and structural properties (like spectra) 
+        on/off graphs with a large number of vertices.
+
 Home
 =====================================
 
@@ -6,10 +12,10 @@ Strucutre and Dyanmics on Graphs
 .. image:: imgs/stdog.png
     :align: center
 
-The main goal of stDoG is provide a package which can be used to study
-dynamics and structural properties (like spectra) on graphs with a huge
-ammout of vertices. The modules of stDoG is being built using a combination
-of code written in *Tensorflow* + *CUDA* and *C++*
+The main goal of stDoG is to provide a package which can be used to study
+dynamical and structural properties (like spectra) on/off graphs with a large
+number of vertices. The modules of stDoG are being built by
+combining codes written in *Tensorflow* + *CUDA* and *C++*.
 
 
 The package is available as a pypi repository

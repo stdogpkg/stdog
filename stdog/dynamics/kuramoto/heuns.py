@@ -1,6 +1,15 @@
 """
 Heun's  in Tensorflow
 =======================================
+
+References
+----------
+
+[1] - Thomas Peron, Bruno Messias, Angélica S. Mata, Francisco A. Rodrigues,
+and Yamir Moreno. On the onset of synchronization of Kuramoto oscillators in
+scale-free networks. arXiv:1905.02256 (2019).
+
+
 """
 
 import numpy as np
@@ -132,7 +141,7 @@ class Heuns:
 
     def create_tf_graph(self):
         """
-        This method is responsible to create the tensorflow graph
+        This method creates the tensorflow graph
 
         """
         with tf.device(self.device):
@@ -238,8 +247,8 @@ class Heuns:
                             )
 
     def run(self):
-        """
-        Run the algorithm and update the phases.
+        """This runs the algorithm and updates the phases.
+
         If transiet is set to True, then  the order parameters is
         calculated and  the array order_parameter_list is updated.
         """

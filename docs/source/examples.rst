@@ -11,9 +11,9 @@ Kuramoto
 --------
 
 stDoG provides two implementations of Heun’s method. The 
-first uses the tensorflow. Therefore, it can be used with both 
+first uses the TensorFlow. Therefore, it can be used with both 
 CPU’s or GPU’s. The second implementation is a python wrapper to a 
-CUDA code. The second (CUDA) is  faster than tensorflow implementation. 
+CUDA code. The second (CUDA) is  faster than TensorFlow implementation. 
 However, a CUDA-compatible GPU is required
 
 
@@ -106,7 +106,16 @@ For that, you need to install our another package,
     heuns_0.total_time = total_time_transient
     heuns_0.run()
     order_parameter_list = heuns_0.order_parameter_list
- 
+
+References
+----------
+
+[1] - Thomas Peron, Bruno Messias, Angélica S. Mata, Francisco A. Rodrigues,
+and Yamir Moreno. On the onset of synchronization of Kuramoto oscillators in
+scale-free networks. arXiv:1905.02256 (2019).
+
+
+
 Spectra
 =======
 
@@ -157,25 +166,23 @@ trace estimator + kernel smoothing.
 
 Trace Functions
 ---------------
-
-Given a positive definite matrix :math:`A \in \mathbb R^{|V|\times|V|}`,
+Given a semi-positive definite matrix :math:`A \in \mathbb R^{|V|\times|V|}`,
 which has the set of eigenvalues given by :math:`\{\lambda_i\}` a trace of
 a matrix function is given by
 
-.. math::
+.. math:: 
 
     \mathrm{tr}(f(A)) = \sum\limits_{i=0}^{|V|} f(\lambda_i)
 
 The methods for calculating such traces functions have a
 cubic computational complexity lower bound,  :math:`O(|V|^3)`.
-Therefore, it is not feasible for  large networks.
+Therefore, it is not feasible for  large networks. One way
+to overcome such computational complexity it is use stochastic approximations
+combined with a mryiad of another methods
+to get the results with enough accuracy and with a small computational cost. 
+The methods available in this module uses the Sthocastic Lanczos Quadrature, 
+a procedure proposed in the work made by Ubaru, S. et.al. [1] (you need to cite them).
 
-Until now, there is two approachs to ovecome such high computational 
-complexity 
-in stDoG. The first approach is use the spectral density obtained by the KPM
-method. The second approach, which can be more suitable, is using the Stochastic
-Lanczos Quadrature (SLQ) proposed at[1]. The next examples show how to use the SLQ in
-stDoG
 
 Spectral Entropy
 ^^^^^^^^^^^^^^^^
@@ -246,3 +253,6 @@ References
     1 - Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. 
     SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.
 
+    2 - Hutchinson, M. F. (1990). A stochastic estimator of the trace of the
+    influence matrix for laplacian smoothing splines. Communications in
+    Statistics-Simulation and Computation, 19(2), 433-450.
