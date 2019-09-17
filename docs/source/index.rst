@@ -24,7 +24,7 @@ The package is available as a pypi repository
 
     $ pip install stdog
 
-The source code is available at <http://github.com/stdogpkg>`.
+The source code is available at http://github.com/stdogpkg.
 
 .. toctree::
    :hidden:

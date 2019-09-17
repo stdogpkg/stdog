@@ -23,7 +23,7 @@ The methods available in this module uses the Sthocastic Lanczos Quadrature,
 a procedure proposed in the work made by Ubaru, S. et.al. [1] (you need to cite them).
 
 References
-^^^^^^^^^^
+-----------
 
 [1] Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via
 Stochastic Lanczos Quadrature. SIAM Journal on Matrix Analysis and

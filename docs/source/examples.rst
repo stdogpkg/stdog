@@ -87,7 +87,7 @@ Using a pure CUDA implementation (faster)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For that, you need to install our another package, 
-`cukuramoto <http://github.com/stdogpkg/cukuramoto>`_
+`cukuramoto http://github.com/stdogpkg/cukuramoto`
 
 .. code-block:: bash
 
@@ -163,6 +163,17 @@ trace estimator + kernel smoothing.
 
 
 .. image:: imgs/kpm_dos.png
+
+References
+----------
+
+[1] Wang, L.W., 1994. Calculating the density of states and
+optical-absorption spectra of large quantum systems by the plane-wave moments
+method. Physical Review B, 49(15), p.10154.
+
+[2] Hutchinson, M.F., 1990. A stochastic estimator of the trace of the
+influence matrix for laplacian smoothing splines. Communications in
+Statistics-Simulation and Computation, 19(2), pp.433-450.
 
 Trace Functions
 ---------------
