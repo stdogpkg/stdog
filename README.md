@@ -1,4 +1,4 @@
-# ![](stdog.png) 
+# ![](docs/source/imgs/stdog.png) 
 # Structure and Dynamics on Graphs (Beta)
 
 The main goal of StDoG is to provide a package which can be used to study
