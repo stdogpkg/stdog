@@ -75,7 +75,7 @@ ax2 = ax1.twinx()
 ax2.plot(couplings,stdr,'r.-')
 plt.show()
 ```
-![](docs/imgs/heuns_tf.png)
+![](docs/source/imgs/heuns_tf.png)
 
 #### CUDA - Faster than Tensorflow implementation
 
@@ -133,7 +133,7 @@ plt.scatter(ek, rho, c="tomato", zorder=999, alpha=0.9, marker="d")
 plt.ylim(0, 1)
 plt.show()
 ```
-![kpm](docs/imgs/kpm_dos.png)
+![kpm](docs/source/imgs/kpm_dos.png)
 #### Trace Functions through Stochastic Lanczos Quadrature (SLQ)[3]
 
 
