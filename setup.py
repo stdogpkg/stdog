@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="stdog",
-    version="v1.0.3",
+    version="v1.0.4",
     packages=find_packages(exclude=["build", ]),
     long_description=README_TEXT,
     long_description_content_type="text/markdown",
@@ -16,7 +16,7 @@ setup(
     description="Structure and Dynamics on Graphs",
     author_email="messias.physics@gmail.com",
     author="Bruno Messias; Thomas K. Peron",
-    download_url="https://github.com/stdogpkg/stdog/archive/v1.0.3.tar.gz", 
+    download_url="https://github.com/stdogpkg/stdog/archive/v1.0.4.tar.gz", 
     keywords=[
         "gpu", "science", "complex-networks", "graphs", "dynamics",
          "tensorflow", "kuramoto"

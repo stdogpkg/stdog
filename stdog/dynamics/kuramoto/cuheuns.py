@@ -1,6 +1,19 @@
 """
 Heun's CUDA
 ===========
+
+allow efficiently simulating phase oscillators 
+(the Kuramoto model) on large heterogeneous networks using the 
+Heun's method with a "pure" CUDA implementation. Should be
+faster than tensorflow implementation.
+References
+----------
+
+[1] - Thomas Peron, Bruno Messias, Angélica S. Mata, Francisco A. Rodrigues,
+and Yamir Moreno. On the onset of synchronization of Kuramoto oscillators in
+scale-free networks. arXiv:1905.02256 (2019).
+
+
 """
 import numpy as np
 try:
@@ -10,10 +23,10 @@ except ImportError:
 
 
 class CUHeuns:
-    """This class allow efficiently simulating phase oscillators 
-    (the Kuramoto model) on large heterogeneous networks using the 
-    Heun's method with a "pure" CUDA implementation. Should be
-    faster than tensorflow implementation.
+    """Allow efficiently simulating phase oscillators (the Kuramoto model) on
+    large heterogeneous networks using the Heun’s method. This class uses a
+    pure CUDA implementation of Heun’s method. Therefore, should be faster
+    than TensorFlow implementation also provided by StDoG
 
     Attributes
     ----------
@@ -101,8 +114,7 @@ class CUHeuns:
         self.create_simulation()
 
     def create_simulation(self):
-        """
-        This method is responsible to create the simulation.
+        """This method method crates the simulation.
         """
         adj = self.adjacency.tocsr()
         ptr, indices = adj.indptr.astype("int32"), adj.indices.astype("int32")
@@ -114,8 +126,8 @@ class CUHeuns:
         self.simulation = simulation
 
     def run(self):
-        """
-        Run the algorithm and update the phases.
+        """This runs the algorithm and updates the phases.
+
         If transiet is set to True, then  the order parameters is
         calculated and  the array order_parameter_list is updated.
         """

@@ -1,3 +1,3 @@
-from . import kuramoto
+from stdog.dynamics import kuramoto
 
 __all__ = ["kuramoto"]

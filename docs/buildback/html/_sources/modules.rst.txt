@@ -1,7 +1,0 @@
-==========
-Spectral
-==========
-
-.. automodule:: stdog.utils.misc
-	:members:
-    

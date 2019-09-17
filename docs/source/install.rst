@@ -7,5 +7,5 @@ The package is available as as pypi repository
 
     $ pip install stdog
 
-The source code is available at <http://github.com/stdogpkg>`.
+The source code is available at http://github.com/stdogpkg.
 

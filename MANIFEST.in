@@ -1,1 +1,3 @@
 include README.md
+include docs/source/imgs/kpm_dos.png
+include docs/source/imgs/stdog.png

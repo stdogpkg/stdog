@@ -1,5 +1,5 @@
-from . import tfops
-from .heuns import Heuns
-from .cuheuns import CUHeuns
+from stdog.dynamics.kuramoto import tfops
+from stdog.dynamics.kuramoto.heuns import Heuns
+from stdog.dynamics.kuramoto.cuheuns import CUHeuns
 
 __all__ = ["Heuns", "tfops", "CUHeuns"]
