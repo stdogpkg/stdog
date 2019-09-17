@@ -3,7 +3,7 @@ from stdog import spectra
 from stdog import utils
 
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 __license__ = "MIT"
 __author__ = "Bruno Messias, Thomas K. Peron"
 __author_email__ = "messias.physics@gmail.com"

@@ -2,7 +2,7 @@
 # Structure and Dynamics on Graphs (Beta)
 
 The main goal of StDoG is to provide a package which can be used to study
-dynamical and structural properties (like spectra) on/off graphs with a large
+dynamical and structural properties (like spectra) on graphs with a large
 number of vertices. The modules of StDoG are being built by
 combining codes written in *Tensorflow* + *CUDA* and *C++*.
 
@@ -102,7 +102,7 @@ order_parameter_list = heuns_0.order_parameter_list #
 
 #### Spectral Density
 
-The Kernel Polynomial Method can estimate the spectral density of large sparse Hermitan matrices with a computational cost almost linear. This method combines three key ingredients: the Chebyshev expansion + the stochastic trace estimator + kernel smoothing.
+The Kernel Polynomial Method [1] can estimate the spectral density of large sparse Hermitan matrices with a computational cost almost linear. This method combines three key ingredients: the Chebyshev expansion + the stochastic trace estimator [2] + kernel smoothing.
 
 ```python
 import igraph as ig
@@ -134,7 +134,7 @@ plt.ylim(0, 1)
 plt.show()
 ```
 ![kpm](docs/imgs/kpm_dos.png)
-#### Trace Functions through Stochastic Lanczos Quadrature (SLQ)[1]
+#### Trace Functions through Stochastic Lanczos Quadrature (SLQ)[3]
 
 
 ##### Computing custom trace functions
@@ -188,8 +188,20 @@ approximated_entropy, exact_entropy
 (-509.46283, -512.5283224633046)
 ```
 
+## References
 
-[[1] Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.](https://epubs.siam.org/doi/abs/10.1137/16M1104974)
+1 -  Wang, L.W., 1994. Calculating the density of states and
+optical-absorption spectra of large quantum systems by the plane-wave moments
+method. Physical Review B, 49(15), p.10154.
+
+2 - Hutchinson, M.F., 1990. A stochastic estimator of the trace of the
+influence matrix for laplacian smoothing splines. Communications in
+Statistics-Simulation and Computation, 19(2), pp.433-450.
+
+3 - Ubaru, S., Chen, J., & Saad, Y. (2017). Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature. 
+SIAM Journal on Matrix Analysis and Applications, 38(4), 1075-1099.
+
+
 ## 3 - How to cite
 
 [Thomas Peron](https://tkdmperon.github.io/), [Bruno Messias](http://brunomessias.com/), Angélica S. Mata, [Francisco A. Rodrigues](http://conteudo.icmc.usp.br/pessoas/francisco/), and [Yamir Moreno](http://cosnet.bifi.es/people/yamir-moreno/). On the onset of synchronization of Kuramoto oscillators in scale-free networks. [arXiv:1905.02256](https://arxiv.org/abs/1905.02256) (2019).

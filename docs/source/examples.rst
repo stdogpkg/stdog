@@ -47,7 +47,7 @@ Creating the data and setting the variables
     total_time_transient = total_time
     transient = False
 
-Using  a Tensorflow implementation
+Tensorflow implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -83,7 +83,7 @@ Plotting the result
 .. image:: imgs/heuns_tf.png 
 
 
-Using a pure CUDA implementation (faster)
+CUDA implementation (faster)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For that, you need to install our another package, 
@@ -196,7 +196,7 @@ a procedure proposed in the work made by Ubaru, S. et.al. [1] (you need to cite 
 
 
 Spectral Entropy
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -242,7 +242,7 @@ The above code returns
 
 
 Custom Trace Function
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
