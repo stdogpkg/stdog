@@ -10,7 +10,7 @@ Dynamics
 Kuramoto
 --------
 
-stDoG provides two implementations of Heun’s method. The 
+StDoG provides two implementations of Heun’s method. The 
 first uses the TensorFlow. Therefore, it can be used with both 
 CPU’s or GPU’s. The second implementation is a python wrapper to a 
 CUDA code. The second (CUDA) is  faster than TensorFlow implementation. 

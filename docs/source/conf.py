@@ -20,7 +20,7 @@ sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = 'stDoG'
+project = 'StDoG'
 copyright = '2019, Bruno Messias; Thomas Peron'
 author = 'Bruno Messias; Thomas Peron'
 
@@ -126,7 +126,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'stDoGdoc'
+htmlhelp_basename = 'StDoGdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -153,7 +153,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'stDoG.tex', 'stDoG Documentation',
+    (master_doc, 'StDoG.tex', 'StDoG Documentation',
      'Bruno Messias; Thomas Peron', 'manual'),
 ]
 
@@ -163,7 +163,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'stdog', 'stDoG Documentation',
+    (master_doc, 'stdog', 'StDoG Documentation',
      [author], 1)
 ]
 
@@ -174,8 +174,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'stDoG', 'stDoG Documentation',
-     author, 'stDoG', 'One line description of project.',
+    (master_doc, 'StDoG', 'StDoG Documentation',
+     author, 'StDoG', 'One line description of project.',
      'Miscellaneous'),
 ]
 

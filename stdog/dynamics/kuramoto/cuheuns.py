@@ -26,7 +26,7 @@ class CUHeuns:
     """Allow efficiently simulating phase oscillators (the Kuramoto model) on
     large heterogeneous networks using the Heun’s method. This class uses a
     pure CUDA implementation of Heun’s method. Therefore, should be faster
-    than TensorFlow implementation also provided by stDoG
+    than TensorFlow implementation also provided by StDoG
 
     Attributes
     ----------
