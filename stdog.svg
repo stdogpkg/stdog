@@ -167,8 +167,8 @@
    id="namedview45"
    showgrid="false"
    inkscape:zoom="0.16296571"
-   inkscape:cx="395.4277"
-   inkscape:cy="-762.21146"
+   inkscape:cx="-1255.2263"
+   inkscape:cy="-777.55211"
    inkscape:window-x="0"
    inkscape:window-y="27"
    inkscape:window-maximized="1"
@@ -257,6 +257,7 @@
 
 
 
+
 <g
    id="g890"
    transform="matrix(1.0258306,0,0,1.0258306,-100.71622,-300.10399)"
@@ -271,7 +272,8 @@
      y="566.2395"
      x="356.79504"
      id="tspan4567"
-     sodipodi:role="line">stDoG</tspan></text>
+     sodipodi:role="line">StDoG</tspan></text>
+
 
 
 
