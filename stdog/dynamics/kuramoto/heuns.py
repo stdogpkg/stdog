@@ -1,5 +1,6 @@
 """
-Heun's  in Tensorflow
+=======================================
+Kuramoto: Heun's method in Tensorflow
 =======================================
 
 References

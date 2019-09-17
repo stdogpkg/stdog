@@ -1,6 +1,7 @@
 """
-Heun's CUDA
-===========
+================================
+Kuramoto: Heun's  method in CUDA
+================================
 
 allow efficiently simulating phase oscillators 
 (the Kuramoto model) on large heterogeneous networks using the 
